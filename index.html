@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The General Knowledge Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #results-container {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .correct {
+            color: #27ae60;
+        }
+
+        .incorrect {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h2>The General Knowledge Quiz</h2>
+        <div id="question-container"></div>
+        <div id="options-container"></div>
+        <button id="submit-btn">Submit</button>
+        <div id="results-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        
+            const questionContainer = document.getElementById("question-container");
+            const optionsContainer = document.getElementById("options-container");
+            const submitBtn = document.getElementById("submit-btn");
+            const resultsContainer = document.getElementById("results-container");
+
+            const questions = [
+                {
+                    question: "What is the capital of France?",
+                    options: ["Berlin", "Madrid", "Paris", "Rome"],
+                    answer: "Paris"
+                },
+                {
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Mars", "Jupiter", "Venus", "Mercury"],
+                    answer: "Mars"
+                },
+                {
+                    question: "Who wrote 'Romeo and Juliet'?",
+                    options: ["Charles Dickens", "Jane Austen", "William Shakespeare", "Mark Twain"],
+                    answer: "William Shakespeare"
+                }
+            ];
+
+            submitBtn.addEventListener("click", showResults);
+
+        
+            function buildQuiz() {
+                questions.forEach((question, index) => {
+                    
+                    questionContainer.innerHTML += `<p>${index + 1}. ${question.question}</p>`;
+
+                   
+                    question.options.forEach((option, i) => {
+                        optionsContainer.innerHTML += `
+                            <input type="radio" name="question${index}" value="${option}" id="q${index}o${i}">
+                            <label for="q${index}o${i}">${option}</label>
+                        `;
+                    });
+                });
+            }
+
+            
+            function showResults() {
+                let score = 0;
+
+                questions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+
+                    if (selectedOption) {
+                        const userAnswer = selectedOption.value;
+
+                        if (userAnswer === question.answer) {
+                            score++;
+                            selectedOption.parentElement.classList.add("correct");
+                        } else {
+                            selectedOption.parentElement.classList.add("incorrect");
+                        }
+                    }
+                });
+
+                resultsContainer.innerHTML = `Your score: ${score} out of ${questions.length}`;
+            }
+
+            
+            buildQuiz();
+        });
+    </script>
+</body>
+</html>
